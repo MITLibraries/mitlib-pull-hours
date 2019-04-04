@@ -1,0 +1,13 @@
+{
+    "name": "MITLibraries/mitlib-pull-hours",
+    "description": "A WordPress plugin",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Matt Bernhardt",
+            "email": "mjbernha@mit.edu"
+        }
+    ],
+    "require": {}
+}
