@@ -8,7 +8,7 @@
 
 ?>
 
-<p>Information about library hours was last updated:<br />
-April 2, 2019 (two days ago)</p>
-<p>The button below will download a fresh copy of <a href="#">the Libraries' hours spreadsheets</a>.</p>
+<p>Information about library hours was last updated...</p>
+<p>The link below will download a fresh copy of <a href="https://docs.google.com/spreadsheets/d/1hK_4p-jx7dxW3RViRcBDSF_4En2QGgxx-Zy7zXkNIQg/edit#gid=1388495537">the Libraries' hours spreadsheets</a>.</p>
+<p><a href="/wp-content/plugins/mitlib-pull-hours/class-scratch.php" target="_new">Update website hours</a></p>
 
