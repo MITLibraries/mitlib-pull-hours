@@ -13,3 +13,6 @@ pids
 logs
 results
 _notes
+
+data/
+backups/
