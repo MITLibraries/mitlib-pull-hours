@@ -12,9 +12,6 @@ class Scratch {
 
 	public $spreadsheet_key = '1hK_4p-jx7dxW3RViRcBDSF_4En2QGgxx-Zy7zXkNIQg';
 
-	// TODO: The scandir() function returns entries for the current and parent
-	// directories, which then cause problems when the copy() function tries
-	// to act upon them. These need to be filtered out somehow.
 	public function backup() {
 		// Format the timestamp into a folder name.
 		$folder = strftime( '%Y%m%d-%H%M%S', $this->cache_timestamp );
@@ -36,8 +33,6 @@ class Scratch {
 		}
 	}
 
-	// TODO: This needs to have the parent sheet URL added to it.
-	// TODO: The child sheets need to be different formatted.
 	private function build_sheet_list( $key ) {
 		// $sheets_array is the list of URLs that will be harvested and
 		// written to the data cache.
@@ -56,17 +51,11 @@ class Scratch {
 			$sheets_array[ $this->spreadsheet_key . '-' . $sheet_key ] = $sheet_url;
 		}
 
-		// This is for debugging only.
-		echo( '<pre>' );
-		print_r( $sheets_array );
-		echo( '</pre>' );
-
 		return $sheets_array;
 	}
 
 	private function fetch( $array ) {
 		foreach ( $array as $key=>$value ) {
-			// echo( '<p>Fetching: ' . $value . '</p>' );
 			$data = file_get_contents( $value );
 			$this->write( $key, $data );
 		}
@@ -132,18 +121,6 @@ class Scratch {
 			   $this->spreadsheet_key . '/' . $key .
 			   '/public/values' .
 			   '?alt=json-in-script&callback=Tabletop.singleton.loadSheet';
-		return $url;
-	}
-
-	private function lookup_format( $url, $format ) {
-		switch ( $format ) {
-			case 'json':
-				$url .= '?alt=json';
-				break;
-			case 'tabletop':
-				$url .= '?alt=json-in-script&callback=Tabletop.singleton.loadSheets';
-				break;
-		}
 		return $url;
 	}
 
