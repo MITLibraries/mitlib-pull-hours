@@ -52,26 +52,8 @@ class Pull_Hours_Dashboard {
 		// If values have been posted, then we save them.
 		if ( ! empty( filter_input( INPUT_POST, 'action' ) ) ) {
 
-			// Check the nonce.
-			check_admin_referer( 'custom_nonce_action', 'custom_nonce_field' );
+			self::update();
 
-			// Perform the updates.
-			if ( 'update' == filter_input( INPUT_POST, 'action' ) ) {
-				// Set default values.
-				$spreadsheet_key = '';
-
-				// Read submitted values.
-				if ( filter_input( INPUT_POST, 'spreadsheet_key' ) ) {
-					$spreadsheet_key = sanitize_text_field(
-						wp_unslash( filter_input( INPUT_POST, 'spreadsheet_key' ) )
-					);
-				}
-
-				update_option( 'spreadsheet_key', $spreadsheet_key );
-			}
-
-			// Add the success message.
-			echo( '<div class="updated"><p>Library hours settings updated.</p></div>' );
 		}
 
 		// Otherwise, we render the dashboard page.
@@ -81,9 +63,26 @@ class Pull_Hours_Dashboard {
 	/**
 	 * Update settings based on post inforamtion.
 	 */
-	public static function update_success() {
-		?>
-		<p>Can you see this?</p>
-		<?php
+	public static function update() {
+		// Check the nonce.
+		check_admin_referer( 'custom_nonce_action', 'custom_nonce_field' );
+
+		// Perform the updates.
+		if ( 'update' == filter_input( INPUT_POST, 'action' ) ) {
+			// Set default values.
+			$spreadsheet_key = '';
+
+			// Read submitted values.
+			if ( filter_input( INPUT_POST, 'spreadsheet_key' ) ) {
+				$spreadsheet_key = sanitize_text_field(
+					wp_unslash( filter_input( INPUT_POST, 'spreadsheet_key' ) )
+				);
+			}
+
+			update_option( 'spreadsheet_key', $spreadsheet_key );
+		}
+
+		// Add the success message.
+		echo( '<div class="updated"><p>The library hours settings have been updated.</p></div>' );
 	}
 }
