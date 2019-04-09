@@ -8,7 +8,14 @@
 
 ?>
 
+<?php
+	$spreadsheet_key = get_option( 'spreadsheet_key' );
+	$spreadsheet_url = 'https://docs.google.com/spreadsheets/d/' . $spreadsheet_key . '/edit';
+?>
+<p>Hours spreadsheet key:<br />
+	<a href="<?php echo esc_url( $spreadsheet_url ); ?>">
+		<?php echo esc_html( $spreadsheet_key ); ?>
+	</a>
+</p>
 <p>Information about library hours was last updated:<br />
 April 2, 2019 (two days ago)</p>
-<p>The button below will download a fresh copy of <a href="#">the Libraries' hours spreadsheets</a>.</p>
-<p>Spreadsheet: _<?php echo( esc_html( $spreadsheet_key ) ); ?>_</p>

@@ -13,3 +13,5 @@ pids
 logs
 results
 _notes
+
+codesniffer.full.xml
