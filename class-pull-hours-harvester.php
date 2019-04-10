@@ -37,7 +37,7 @@ class Pull_Hours_Harvester {
 	 *
 	 * @var string The local folder in which newly harvested data is written.
 	 */
-	public $data_folder = 'data/';
+	public $data_folder = '';
 
 	/**
 	 * The path is the loal file path to the current directory. It is
@@ -97,9 +97,6 @@ class Pull_Hours_Harvester {
 	 * by $backup_folder.
 	 */
 	private function backup() {
-		// Figure out where we are.
-		$this->path = plugin_dir_path( __FILE__ );
-
 		// Construct full paths to backup and data folders.
 		$folder = strftime( '%Y%m%d-%H%M%S', $this->cache_timestamp );
 		$this->backup_folder = $this->path . '/' . $this->backup_folder . $folder . '/';
@@ -229,6 +226,11 @@ class Pull_Hours_Harvester {
 
 		// Populate spreadsheet key based on WP option.
 		$this->spreadsheet_key = get_option( 'spreadsheet_key' );
+
+		// Define path to data storage.
+		// This used to use plugin_dir_path( __FILE__ ) but we decided to
+		// instead use the already-in-use /app/libhours-buildhours/ path.
+		$this->path = get_home_path() . 'app/libhours-buildjson';
 	}
 
 	/**
