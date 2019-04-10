@@ -3,7 +3,7 @@
  * Plugin Name:   MITlib Pull Hours
  * Plugin URI:    https://github.com/MITLibraries/mitlib-pull-hours
  * Description:   A WordPress plugin that populates a local JSON cache from a Google Spreadsheet.
- * Version:       0.0.2
+ * Version:       0.1.0
  * Author:        MIT Libraries
  * Author URI:    https://github.com/MITLibraries
  * Licence:       GPL2
