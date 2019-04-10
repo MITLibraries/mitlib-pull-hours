@@ -82,7 +82,8 @@ class Pull_Hours_Dashboard {
 
 			update_option( 'spreadsheet_key', $spreadsheet_key );
 
-			$harvester = New Pull_Hours_Harvester();
+			// Perform the harvesting.
+			$harvester = new Pull_Hours_Harvester();
 			$harvester->harvest();
 
 		}

@@ -20,4 +20,4 @@
 	</a>
 </p>
 <p>Information about library hours was last updated:<br />
-<?php echo esc_html( date( "M j, Y g:i:s A T", $cache_timestamp ) ); ?></p>
+<?php echo esc_html( date( 'M j, Y g:i:s A T', $cache_timestamp ) ); ?></p>
