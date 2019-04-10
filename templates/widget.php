@@ -11,6 +11,8 @@
 <?php
 	$spreadsheet_key = get_option( 'spreadsheet_key' );
 	$spreadsheet_url = 'https://docs.google.com/spreadsheets/d/' . $spreadsheet_key . '/edit';
+
+	$cache_timestamp = get_option( 'cache_timestamp' );
 ?>
 <p>Hours spreadsheet key:<br />
 	<a href="<?php echo esc_url( $spreadsheet_url ); ?>">
@@ -18,4 +20,4 @@
 	</a>
 </p>
 <p>Information about library hours was last updated:<br />
-April 2, 2019 (two days ago)</p>
+<?php echo esc_html( date( "M j, Y g:i:s A T", $cache_timestamp ) ); ?></p>

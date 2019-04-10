@@ -50,7 +50,8 @@ class Pull_Hours_Dashboard {
 		}
 
 		// If values have been posted, then we save them.
-		if ( ! empty( filter_input( INPUT_POST, 'action' ) ) ) {
+		$action = filter_input( INPUT_POST, 'action' );
+		if ( ! empty( $action ) ) {
 
 			self::update();
 
@@ -80,6 +81,10 @@ class Pull_Hours_Dashboard {
 			}
 
 			update_option( 'spreadsheet_key', $spreadsheet_key );
+
+			$harvester = New Pull_Hours_Harvester();
+			$harvester->harvest();
+
 		}
 
 		// Add the success message.

@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Include the necesary classes.
 include_once( 'class-pull-hours-dashboard.php' );
+include_once( 'class-pull-hours-harvester.php' );
 include_once( 'class-pull-hours-settings.php' );
 include_once( 'class-pull-hours-widget.php' );
 

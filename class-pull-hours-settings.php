@@ -39,6 +39,18 @@ class Pull_Hours_Settings {
 				'class' => 'mitlib_hours_row',
 			)
 		);
+
+		add_settings_field(
+			'cache_timestamp',
+			'Last harvested',
+			array( 'mitlib\Pull_Hours_Settings', 'timestamp_callback' ),
+			'mitlib-hours-dashboard',
+			'mitlib_pull_hours_general',
+			array(
+				'label_for' => 'cache_timestamp',
+				'class' => 'mitlib_hours_row',
+			)
+		);
 	}
 
 	/**
@@ -54,5 +66,13 @@ class Pull_Hours_Settings {
 	public static function spreadsheet_callback() {
 		$spreadsheet_key = get_option( 'spreadsheet_key' );
 		require_once( 'templates/forms/spreadsheet-key.php' );
+	}
+
+	/**
+	 * Field-rendering callback for the Google Spreadsheet key
+	 */
+	public static function timestamp_callback() {
+		$cache_timestamp = get_option( 'cache_timestamp' );
+		require_once( 'templates/forms/cache-timestamp.php' );
 	}
 }
