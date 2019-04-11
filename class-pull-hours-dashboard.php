@@ -1,6 +1,6 @@
 <?php
 /**
- * Class that defines a dashboard widget.
+ * Class that defines a plugin settings dashboard.
  *
  * @package MITlib Pull Hours
  * @since 0.0.1
