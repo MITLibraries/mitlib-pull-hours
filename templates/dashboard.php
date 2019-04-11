@@ -9,12 +9,14 @@
 ?>
 
 <div class="wrap">
+	<h1>Library hours cache settings</h1>
+	<p>This form will update the local cache of library hours based on the Google spreadsheet identified below.</p>
 	<form method="post" action="">
 		<?php
 			wp_nonce_field( 'custom_nonce_action', 'custom_nonce_field' );
 			settings_fields( 'mitlib_pull_hours' );
 			do_settings_sections( 'mitlib-hours-dashboard' );
-			submit_button( 'Save settings' );
+			submit_button( 'Update hours cache' );
 		?>
 	</form>
 </div>

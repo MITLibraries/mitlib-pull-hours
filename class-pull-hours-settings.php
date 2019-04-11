@@ -23,7 +23,7 @@ class Pull_Hours_Settings {
 
 		add_settings_section(
 			'mitlib_pull_hours_general',
-			'Library hours settings',
+			'General settings',
 			array( 'mitlib\Pull_Hours_Settings', 'general' ),
 			'mitlib-hours-dashboard'
 		);
@@ -57,7 +57,7 @@ class Pull_Hours_Settings {
 	 * This is the general description at the top of the settings form.
 	 */
 	public static function general() {
-		echo '<p>These settings allow you to customize certain aspects of the MIT Libraries\' hours system.</p>';
+		echo '';
 	}
 
 	/**

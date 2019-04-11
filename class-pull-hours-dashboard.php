@@ -89,6 +89,6 @@ class Pull_Hours_Dashboard {
 		}
 
 		// Add the success message.
-		echo( '<div class="updated"><p>The library hours settings have been updated.</p></div>' );
+		echo( '<div class="updated"><p>The library hours settings have been updated. Please <a href="/hours">check the public hours page</a> to verify success.</p></div>' );
 	}
 }
