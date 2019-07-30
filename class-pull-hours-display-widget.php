@@ -38,27 +38,45 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	public function form( $instance ) {
 		$widget_title = $instance['widget_title'];
 		$location_slug = $instance['location_slug'];
+
+		$this->form_textfield(
+			'widget_title',
+			'Widget Title:',
+			$widget_title
+		);
+		$this->form_textfield(
+			'location_slug',
+			'Location Name:',
+			$location_slug,
+			'This value should correspond to the name of a location in the Hours spreadsheet.'
+		);
+	}
+
+	/**
+	 * Common template for text fields in widget settings forms.
+	 *
+	 * @param string   $fieldname The name of the field.
+	 * @param string   $fieldtitle The displayed title of the field.
+	 * @param variable $fieldvalue The current value of the field.
+	 * @param string   $fieldexplain Optional: a statement explaining the purpose of the field.
+	 */
+	public function form_textfield( $fieldname, $fieldtitle, $fieldvalue, $fieldexplain = null ) {
 		?>
-		<p><label for="<?php echo esc_attr( $this->get_field_id( 'widget_title' ) ); ?>">
-				<?php esc_attr_e( 'Widget Title:' ); ?>
-				<input
-					class="widefat"
-					id="<?php echo esc_attr( $this->get_field_id( 'widget_title' ) ); ?>"
-					type="text"
-					name="<?php echo esc_attr( $this->get_field_name( 'widget_title' ) ); ?>"
-					value="<?php echo esc_html( $widget_title ); ?>">
-		</label></p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'location_slug' ) ); ?>">
-				<?php esc_attr_e( 'Location Name:' ); ?>
+			<label for="<?php echo esc_attr( $this->get_field_id( $fieldname ) ); ?>">
+				<?php echo esc_attr( $fieldtitle ); ?>
 				<input
 					class="widefat"
-					id="<?php echo esc_attr( $this->get_field_id( 'location_slug' ) ); ?>"
+					id="<?php echo esc_attr( $this->get_field_id( $fieldname ) ); ?>"
 					type="text"
-					name="<?php echo esc_attr( $this->get_field_name( 'location_slug' ) ); ?>"
-					value="<?php echo esc_html( $location_slug ); ?>">
+					name="<?php echo esc_attr( $this->get_field_name( $fieldname ) ); ?>"
+					value="<?php echo esc_html( $fieldvalue ); ?>">
 			</label>
-			This value should correspond to the name of a location in the Hours spreadsheet.
+			<?php
+			if ( $fieldexplain ) {
+				echo esc_html( $fieldexplain );
+			}
+			?>
 		</p>
 		<?php
 	}
