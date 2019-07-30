@@ -39,27 +39,25 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 		$widget_title = $instance['widget_title'];
 		$location_slug = $instance['location_slug'];
 		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'widget_title' ) ); ?>">
+		<p><label for="<?php echo esc_attr( $this->get_field_id( 'widget_title' ) ); ?>">
 				<?php esc_attr_e( 'Widget Title:' ); ?>
-			</label>
-			<input
-				class="widefat"
-				id="<?php echo esc_attr( $this->get_field_id( 'widget_title' ) ); ?>"
-				type="text"
-				name="<?php echo esc_attr( $this->get_field_name( 'widget_title' ) ); ?>"
-				value="<?php echo esc_html( $widget_title ); ?>">
-		</p>
+				<input
+					class="widefat"
+					id="<?php echo esc_attr( $this->get_field_id( 'widget_title' ) ); ?>"
+					type="text"
+					name="<?php echo esc_attr( $this->get_field_name( 'widget_title' ) ); ?>"
+					value="<?php echo esc_html( $widget_title ); ?>">
+		</label></p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'location_slug' ) ); ?>">
 				<?php esc_attr_e( 'Location Name:' ); ?>
+				<input
+					class="widefat"
+					id="<?php echo esc_attr( $this->get_field_id( 'location_slug' ) ); ?>"
+					type="text"
+					name="<?php echo esc_attr( $this->get_field_name( 'location_slug' ) ); ?>"
+					value="<?php echo esc_html( $location_slug ); ?>">
 			</label>
-			<input
-				class="widefat"
-				id="<?php echo esc_attr( $this->get_field_id( 'location_slug' ) ); ?>"
-				type="text"
-				name="<?php echo esc_attr( $this->get_field_name( 'location_slug' ) ); ?>"
-				value="<?php echo esc_html( $location_slug ); ?>">
 			This value should correspond to the name of a location in the Hours spreadsheet.
 		</p>
 		<?php
@@ -95,15 +93,34 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	 * @link https://developer.wordpress.org/reference/classes/wp_widget/
 	 */
 	public function widget( $args, $instance ) {
+		// Define expected markup for widget and title containers.
+		$allowed = array(
+			'aside' => array(
+				'class' => array(),
+				'id' => array(),
+				'role' => array(),
+			),
+			'div' => array(
+				'class' => array(),
+				'id' => array(),
+				'role' => array(),
+			),
+			'h2' => array(
+				'class' => array(),
+			),
+			'h3' => array(
+				'class' => array(),
+			),
+		);
 		// Render markup.
-		echo $args['before_widget'];
+		echo wp_kses( $args['before_widget'], $allowed );
 		if ( $instance['widget_title'] ) {
-			echo $args['before_title'] . $instance['widget_title'] . $args['after_title'];
+			echo wp_kses( $args['before_title'], $allowed ) . esc_html( $instance['widget_title'] ) . wp_kses( $args['after_title'], $allowed );
 		}
-		echo '<p class="hours-today">Today\'s Hours:';
-		echo '<span data-location-hours="' . $instance['location_slug'] . '"></span>';
-		echo ' | <a href="/hours" class="link-hours-all">See all hours</a>';
+		echo '<p class="hours-today">Today\'s hours: ';
+		echo '<span style="display:inline-block;" data-location-hours="' . esc_attr( $instance['location_slug'] ) . '"></span><br />';
+		echo '<a href="/hours">See all hours</a>';
 		echo '</p>';
-		echo $args['after_widget'];
+		echo wp_kses( $args['after_widget'], $allowed );
 	}
 }
