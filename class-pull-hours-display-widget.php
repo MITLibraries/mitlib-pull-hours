@@ -112,7 +112,26 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		// Define expected markup for widget and title containers.
-		$allowed = array(
+		$allowed = $this->widget_allowed();
+
+		// Render markup.
+		echo wp_kses( $args['before_widget'], $allowed );
+		if ( $instance['widget_title'] ) {
+			echo wp_kses( $args['before_title'], $allowed ) . esc_html( $instance['widget_title'] ) . wp_kses( $args['after_title'], $allowed );
+		}
+		echo '<p class="hours-today">Today\'s hours: ';
+		echo '<span style="display:inline-block;" data-location-hours="' . esc_attr( $instance['location_slug'] ) . '"></span><br />';
+		echo '<a href="/hours">See all hours</a>';
+		echo '</p>';
+		echo wp_kses( $args['after_widget'], $allowed );
+	}
+
+	/**
+	 * This returns an array of expected tags and attributes for widget
+	 * rendering.
+	 */
+	public function widget_allowed() {
+		return array(
 			'aside' => array(
 				'class' => array(),
 				'id' => array(),
@@ -130,8 +149,5 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 				'class' => array(),
 			),
 		);
-
-		// Use the template to render widget output.
-		require_once( 'templates/display-widget.php' );
 	}
 }
