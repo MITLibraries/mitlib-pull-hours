@@ -38,6 +38,7 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	public function form( $instance ) {
 		$widget_title = $instance['widget_title'];
 		$location_slug = $instance['location_slug'];
+		$footnote = $instance['footnote'];
 
 		$this->form_textfield(
 			'widget_title',
@@ -49,6 +50,12 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 			'Location Name:',
 			$location_slug,
 			'This value should correspond to the name of a location in the Hours spreadsheet.'
+		);
+		$this->form_textfield(
+			'footnote',
+			'Footnote:',
+			$footnote,
+			'If present, this sentence appears below the hours statement as a footnote.'
 		);
 	}
 
@@ -100,6 +107,7 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 		$instance = $old_instance;
 		$instance['widget_title'] = $new_instance['widget_title'];
 		$instance['location_slug'] = $new_instance['location_slug'];
+		$instance['footnote'] = $new_instance['footnote'];
 		return $instance;
 	}
 
@@ -120,9 +128,12 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 			echo wp_kses( $args['before_title'], $allowed ) . esc_html( $instance['widget_title'] ) . wp_kses( $args['after_title'], $allowed );
 		}
 		echo '<p class="hours-today">Today\'s hours: ';
-		echo '<span style="display:inline-block;" data-location-hours="' . esc_attr( $instance['location_slug'] ) . '"></span><br />';
+		echo '<span style="display:inline-block; margin-bottom: 0;" data-location-hours="' . esc_attr( $instance['location_slug'] ) . '"></span><br />';
 		echo '<a href="/hours">See all hours</a>';
 		echo '</p>';
+		if ( $instance['footnote'] ) {
+			echo '<p>' . esc_html( $instance['footnote'] ) . '</p>';
+		}
 		echo wp_kses( $args['after_widget'], $allowed );
 	}
 
