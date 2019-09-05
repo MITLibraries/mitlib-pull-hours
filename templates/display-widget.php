@@ -8,7 +8,7 @@
 
 ?>
 
-<p class="hours-today">Today's hours:
+<p>Today's hours:
 	<span 
 		style="display:inline-block; margin-bottom: 0;"
 		data-location-hours="<?php echo esc_attr( $instance['location_slug'] ); ?>"></span><br />
