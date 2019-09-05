@@ -11,7 +11,7 @@ namespace mitlib;
 /**
  * Defines base widget
  */
-class Pull_Hours_Widget {
+class Pull_Hours_Admin_Widget {
 
 	/**
 	 * The id of this widget.
@@ -33,7 +33,7 @@ class Pull_Hours_Widget {
 			wp_add_dashboard_widget(
 				self::WID, // A unique slug/ID.
 				'Library hours information', // Visible name for the widget.
-				array( 'mitlib\Pull_Hours_Widget', 'widget' )  // Callback for the main widget content.
+				array( 'mitlib\Pull_Hours_Admin_Widget', 'widget' )  // Callback for the main widget content.
 			);
 		}
 	}
@@ -63,6 +63,6 @@ class Pull_Hours_Widget {
 		}
 
 		// Use the template to render widget output.
-		require_once( 'templates/widget.php' );
+		require_once( 'templates/admin-widget.php' );
 	}
 }
