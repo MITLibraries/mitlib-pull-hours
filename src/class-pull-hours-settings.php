@@ -6,7 +6,7 @@
  * @since 0.0.1
  */
 
-namespace mitlib;
+namespace Mitlib;
 
 /**
  * Defines base widget
@@ -24,14 +24,14 @@ class Pull_Hours_Settings {
 		add_settings_section(
 			'mitlib_pull_hours_general',
 			'General settings',
-			array( 'mitlib\Pull_Hours_Settings', 'general' ),
+			array( 'Mitlib\Pull_Hours_Settings', 'general' ),
 			'mitlib-hours-dashboard'
 		);
 
 		add_settings_field(
 			'spreadsheet_key',
 			'Hours spreadsheet key',
-			array( 'mitlib\Pull_Hours_Settings', 'spreadsheet_callback' ),
+			array( 'Mitlib\Pull_Hours_Settings', 'spreadsheet_callback' ),
 			'mitlib-hours-dashboard',
 			'mitlib_pull_hours_general',
 			array(
@@ -43,7 +43,7 @@ class Pull_Hours_Settings {
 		add_settings_field(
 			'cache_timestamp',
 			'Last harvested',
-			array( 'mitlib\Pull_Hours_Settings', 'timestamp_callback' ),
+			array( 'Mitlib\Pull_Hours_Settings', 'timestamp_callback' ),
 			'mitlib-hours-dashboard',
 			'mitlib_pull_hours_general',
 			array(
@@ -65,7 +65,7 @@ class Pull_Hours_Settings {
 	 */
 	public static function spreadsheet_callback() {
 		$spreadsheet_key = get_option( 'spreadsheet_key' );
-		require_once( 'templates/forms/spreadsheet-key.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '../templates/forms/spreadsheet-key.php' );
 	}
 
 	/**
@@ -73,6 +73,6 @@ class Pull_Hours_Settings {
 	 */
 	public static function timestamp_callback() {
 		$cache_timestamp = get_option( 'cache_timestamp' );
-		require_once( 'templates/forms/cache-timestamp.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '../templates/forms/cache-timestamp.php' );
 	}
 }

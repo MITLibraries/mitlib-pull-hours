@@ -6,7 +6,7 @@
  * @since 0.0.1
  */
 
-namespace mitlib;
+namespace Mitlib;
 
 /**
  * Defines base widget
@@ -72,6 +72,12 @@ class Pull_Hours_Harvester {
 		// This happens by copying the contents of the data/ folder to a
 		// timestamped folder inside the backups/ folder.
 		$this->backup();
+
+		// Now we establish a client that can retrieve information from the
+		// Google Sheets API (v4).
+		// This approach is borrowed from the PHP Quickstart at
+		// https://developers.google.com/sheets/api/quickstart/php
+		$api_client = $this->get_client();
 
 		// Now we build an associate array of the materials that need to be
 		// harvested from Google Sheets. We start with the spreadsheet key,
@@ -161,6 +167,16 @@ class Pull_Hours_Harvester {
 			$data = file_get_contents( $value );
 			$this->write( $key, $data );
 		}
+	}
+
+	/**
+	 * This method establishes a client, with associated token, that can read
+	 * information from the Google Sheets API (v4).
+	 *
+	 * @link https://developers.google.com/sheets/api/quickstart/php
+	 */
+	private function get_client() {
+		error_log( 'This will be the start of the v4 API harvester...' );
 	}
 
 	/**

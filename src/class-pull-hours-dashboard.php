@@ -6,7 +6,7 @@
  * @since 0.0.1
  */
 
-namespace mitlib;
+namespace Mitlib;
 
 /**
  * Defines base widget
@@ -34,7 +34,7 @@ class Pull_Hours_Dashboard {
 				'Library hours',
 				self::PERMS,
 				'mitlib-hours-dashboard',
-				array( 'mitlib\Pull_Hours_Dashboard', 'dashboard' )
+				array( 'Mitlib\Pull_Hours_Dashboard', 'dashboard' )
 			);
 		}
 	}
@@ -58,7 +58,7 @@ class Pull_Hours_Dashboard {
 		}
 
 		// Otherwise, we render the dashboard page.
-		require_once( 'templates/dashboard.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '../templates/dashboard.php' );
 	}
 
 	/**
