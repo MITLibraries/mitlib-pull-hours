@@ -78,6 +78,7 @@ class Pull_Hours_Harvester {
 		// This approach is borrowed from the PHP Quickstart at
 		// https://developers.google.com/sheets/api/quickstart/php
 		$api_client = $this->get_client();
+		var_dump( $api_client );
 
 		// Now we build an associate array of the materials that need to be
 		// harvested from Google Sheets. We start with the spreadsheet key,
@@ -177,6 +178,8 @@ class Pull_Hours_Harvester {
 	 */
 	private function get_client() {
 		error_log( 'This will be the start of the v4 API harvester...' );
+		$client = new \Google_Client();
+		return $client;
 	}
 
 	/**
