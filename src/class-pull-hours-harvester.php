@@ -77,8 +77,23 @@ class Pull_Hours_Harvester {
 		// Google Sheets API (v4).
 		// This approach is borrowed from the PHP Quickstart at
 		// https://developers.google.com/sheets/api/quickstart/php
-		$api_client = $this->get_client();
-		var_dump( $api_client );
+		$api_service = $this->get_service();
+
+		error_log( 'Retrieving list of semesters...' );
+		$range = 'Semester Breakdown!A:C';
+		$response = $api_service->spreadsheets_values->get( $this->spreadsheet_key, $range );
+		$values = $response->getValues();
+		if ( empty( $values ) ) {
+			echo 'No data found...';
+		} else {
+			foreach ( $values as $row ) {
+				echo '<p>';
+				echo esc_html( $row[0] ) . '<br />';
+				echo esc_html( $row[1] ) . '<br />';
+				echo esc_html( $row[2] ) . '<br />';
+				echo '</p>';
+			}
+		}
 
 		// Now we build an associate array of the materials that need to be
 		// harvested from Google Sheets. We start with the spreadsheet key,
@@ -176,10 +191,26 @@ class Pull_Hours_Harvester {
 	 *
 	 * @link https://developers.google.com/sheets/api/quickstart/php
 	 */
-	private function get_client() {
-		error_log( 'This will be the start of the v4 API harvester...' );
+	private function get_service() {
+		error_log( 'Defining Google Sheet Service...' );
 		$client = new \Google_Client();
-		return $client;
+		// TODO: Figure out what the ApplicationName influences.
+		$client->setApplicationName('Library_Hours_Harvester');
+		$client->setScopes(\Google_Service_Sheets::SPREADSHEETS_READONLY);
+		$client->setAuthConfig( plugin_dir_path( __FILE__) . '../auth/credentials.json');
+
+		// Load previously authorized token from a file.
+		// It appears that this token need not be valid, it just needs to be present.
+		$token_path = plugin_dir_path( __FILE__ ) . '../auth/token.json';
+		if ( file_exists( $token_path ) ) {
+			$access_token = json_decode( file_get_contents( $token_path ), true );
+			error_log( $access_token );
+			$client->setAccessToken( $access_token );
+		}
+
+		$service = new \Google_Service_Sheets( $client );
+
+		return $service;
 	}
 
 	/**

@@ -16,4 +16,6 @@ _notes
 
 codesniffer.full.xml
 
+auth/*.json
+
 vendor/
