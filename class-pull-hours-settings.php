@@ -17,39 +17,29 @@ class Pull_Hours_Settings {
 	 * Register the various settings
 	 */
 	public static function init() {
-		// Register the settings used.
 		register_setting( 'mitlib_pull_hours', 'cache_timestamp' );
 		register_setting( 'mitlib_pull_hours', 'spreadsheet_key' );
-
 		add_settings_section(
 			'mitlib_pull_hours_general',
 			'General settings',
 			array( 'mitlib\Pull_Hours_Settings', 'general' ),
 			'mitlib-hours-dashboard'
 		);
-
 		add_settings_field(
 			'spreadsheet_key',
 			'Hours spreadsheet key',
 			array( 'mitlib\Pull_Hours_Settings', 'spreadsheet_callback' ),
 			'mitlib-hours-dashboard',
 			'mitlib_pull_hours_general',
-			array(
-				'label_for' => 'spreadsheet_key',
-				'class' => 'mitlib_hours_row',
-			)
+			array( 'label_for' => 'spreadsheet_key' )
 		);
-
 		add_settings_field(
 			'cache_timestamp',
 			'Last harvested',
 			array( 'mitlib\Pull_Hours_Settings', 'timestamp_callback' ),
 			'mitlib-hours-dashboard',
 			'mitlib_pull_hours_general',
-			array(
-				'label_for' => 'cache_timestamp',
-				'class' => 'mitlib_hours_row',
-			)
+			array( 'label_for' => 'cache_timestamp' )
 		);
 	}
 
