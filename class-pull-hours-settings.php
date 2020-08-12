@@ -65,7 +65,21 @@ class Pull_Hours_Settings {
 	 */
 	public static function spreadsheet_callback() {
 		$spreadsheet_key = get_option( 'spreadsheet_key' );
-		require_once( 'templates/forms/spreadsheet-key.php' );
+		$template = file_get_contents( dirname( __FILE__ ) . '/templates/forms/spreadsheet-key.html' );
+		// The $allowed_html array needs to be kept updated with the markup
+		// used in the spreadsheet-key.html template.
+		$allowed_html = array(
+			'input' => array(
+				'type' => array(),
+				'name' => array(),
+				'value' => array(),
+				'id' => array(),
+				'size' => array()
+			),
+			'p' => array(),
+			'br' => array()
+		);
+		echo wp_kses( sprintf( $template, 'spreadsheet_key', $spreadsheet_key ), $allowed_html );
 	}
 
 	/**
