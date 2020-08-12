@@ -158,22 +158,10 @@ class Pull_Hours_Harvester {
 	 * @link https://developers.google.com/sheets/api/quickstart/php
 	 */
 	private function get_service() {
-		error_log( 'Defining Google Sheet Service...' );
 		$client = new \Google_Client();
 		$client->setApplicationName('Library_Hours_Harvester');
-		$client->setScopes(\Google_Service_Sheets::SPREADSHEETS_READONLY);
-		$client->setAuthConfig( plugin_dir_path( __FILE__) . '../auth/credentials.json');
-
-		// Load previously authorized token from a file.
-		// It appears that this token need not be valid, it just needs to be present.
-		$token_path = plugin_dir_path( __FILE__ ) . '../auth/token.json';
-		if ( file_exists( $token_path ) ) {
-			$access_token = json_decode( file_get_contents( $token_path ), true );
-			$client->setAccessToken( $access_token );
-		}
-
+		$client->setDeveloperKey('API_KEY_HERE');
 		$service = new \Google_Service_Sheets( $client );
-
 		return $service;
 	}
 
