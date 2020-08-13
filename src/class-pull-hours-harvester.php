@@ -42,6 +42,15 @@ class Pull_Hours_Harvester {
 	public $data_folder = '';
 
 	/**
+	 * The Google API key is a credential used to access the Google Sheets
+	 * API. It should be restricted to only the Sheets API, as well as
+	 * restricted to referals from Libraries domains.
+	 *
+	 * @var string The API key used to connect to the Google Sheets API.
+	 */
+	public $google_api_key = '';
+
+	/**
 	 * The path is the loal file path to the current directory. It is
 	 * populated by the WordPress function plugin_dir_path(), and is necessary
 	 * because relative file paths fail under WordPress.
@@ -167,8 +176,8 @@ class Pull_Hours_Harvester {
 			]
 		]);
 		$client = new \Google_Client();
-		$client->setApplicationName('Library_Hours_Harvester');
-		$client->setDeveloperKey('API_KEY_HERE');
+		$client->setApplicationName('LibraryHoursSheets');
+		$client->setDeveloperKey( $this->google_api_key );
 		$client->setHttpClient($httpClient);
 		$service = new \Google_Service_Sheets( $client );
 		return $service;
@@ -193,6 +202,9 @@ class Pull_Hours_Harvester {
 		// Define timestamp as current time.
 		$this->cache_timestamp = time();
 		update_option( 'cache_timestamp', $this->cache_timestamp );
+
+		// Populate spreadsheet key based on WP option.
+		$this->google_api_key = get_option( 'google_api_key' );
 
 		// Populate spreadsheet key based on WP option.
 		$this->spreadsheet_key = get_option( 'spreadsheet_key' );

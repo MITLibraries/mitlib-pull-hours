@@ -19,6 +19,7 @@ class Pull_Hours_Settings {
 	public static function init() {
 		// Register the settings used.
 		register_setting( 'mitlib_pull_hours', 'cache_timestamp' );
+		register_setting( 'mitlib_pull_hours', 'google_api_key' );
 		register_setting( 'mitlib_pull_hours', 'spreadsheet_key' );
 
 		add_settings_section(
@@ -41,6 +42,18 @@ class Pull_Hours_Settings {
 		);
 
 		add_settings_field(
+			'google_api_key',
+			'Google Sheets API key',
+			array( 'Mitlib\Pull_Hours_Settings', 'google_api_key_callback' ),
+			'mitlib-hours-dashboard',
+			'mitlib_pull_hours_general',
+			array(
+				'label_for' => 'google_api_key',
+				'class' => 'mitlib_hours_row',
+			)
+		);
+
+		add_settings_field(
 			'cache_timestamp',
 			'Last harvested',
 			array( 'Mitlib\Pull_Hours_Settings', 'timestamp_callback' ),
@@ -58,6 +71,14 @@ class Pull_Hours_Settings {
 	 */
 	public static function general() {
 		echo '';
+	}
+
+	/**
+	 * Field-rendering callback for the Google Spreadsheet key
+	 */
+	public static function google_api_key_callback() {
+		$google_api_key = get_option( 'google_api_key' );
+		require_once( plugin_dir_path( __FILE__ ) . '../templates/forms/google-api-key.php' );
 	}
 
 	/**
