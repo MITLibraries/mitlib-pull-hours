@@ -8,6 +8,8 @@
 
 namespace Mitlib;
 
+use GuzzleHttp\Client;
+
 /**
  * Defines base widget
  */
@@ -156,11 +158,18 @@ class Pull_Hours_Harvester {
 	 * information from the Google Sheets API (v4).
 	 *
 	 * @link https://developers.google.com/sheets/api/quickstart/php
+	 * @link https://github.com/googleapis/google-api-php-client#user-content-controlling-http-client-configuration-directly
 	 */
 	private function get_service() {
+		$httpClient = new Client([
+			'headers' => [
+				'referer' => DOMAIN_CURRENT_SITE
+			]
+		]);
 		$client = new \Google_Client();
 		$client->setApplicationName('Library_Hours_Harvester');
 		$client->setDeveloperKey('API_KEY_HERE');
+		$client->setHttpClient($httpClient);
 		$service = new \Google_Service_Sheets( $client );
 		return $service;
 	}
