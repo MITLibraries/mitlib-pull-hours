@@ -150,14 +150,14 @@ class Pull_Hours_Harvester {
 	/**
 	 * This method iterates over the $array (defined in build_sheet_list) and
 	 * fetches each item (in the $value) and writes it to the filename defined
-	 * by $key.
+	 * by $target (which has been sanitized with dashes).
 	 *
 	 * @param Array $array An associative array of filenames and URLs.
 	 */
 	private function fetch( $service, $array ) {
-		foreach ( $array as $key => $target ) {
+		foreach ( $array as $target ) {
 			$data = $service->spreadsheets_values->get( $this->spreadsheet_key, $target );
-			$filename = sanitize_title_with_dashes( $target ) . '.json';
+			$filename = sanitize_file_name( $target ) . '.json';
 			$this->write( $filename, json_encode( $data['values'] ) );
 		}
 	}
