@@ -15,3 +15,7 @@ results
 _notes
 
 codesniffer.full.xml
+
+auth/*.json
+
+vendor/

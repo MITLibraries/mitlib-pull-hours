@@ -6,7 +6,7 @@
  * @since 0.2.0
  */
 
-namespace mitlib;
+namespace Mitlib;
 
 /**
  * Defines a public-facing widget for displaying hours information
@@ -85,7 +85,7 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	 * Registers widget.
 	 */
 	public static function init() {
-		register_widget( 'mitlib\Pull_Hours_Display_Widget' );
+		register_widget( 'Mitlib\Pull_Hours_Display_Widget' );
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 		if ( $instance['widget_title'] ) {
 			echo wp_kses( $args['before_title'], $allowed ) . esc_html( $instance['widget_title'] ) . wp_kses( $args['after_title'], $allowed );
 		}
-		require( 'templates/display-widget.php' );
+		require( plugin_dir_path( __FILE__ ) . '../templates/display-widget.php' );
 		echo wp_kses( $args['after_widget'], $allowed );
 	}
 

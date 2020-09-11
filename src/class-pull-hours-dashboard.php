@@ -6,7 +6,7 @@
  * @since 0.0.1
  */
 
-namespace mitlib;
+namespace Mitlib;
 
 /**
  * Defines base widget
@@ -34,7 +34,7 @@ class Pull_Hours_Dashboard {
 				'Library hours',
 				self::PERMS,
 				'mitlib-hours-dashboard',
-				array( 'mitlib\Pull_Hours_Dashboard', 'dashboard' )
+				array( 'Mitlib\Pull_Hours_Dashboard', 'dashboard' )
 			);
 		}
 	}
@@ -58,7 +58,7 @@ class Pull_Hours_Dashboard {
 		}
 
 		// Otherwise, we render the dashboard page.
-		require_once( 'templates/dashboard.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '../templates/dashboard.php' );
 	}
 
 	/**
@@ -71,7 +71,15 @@ class Pull_Hours_Dashboard {
 		// Perform the updates.
 		if ( 'update' == filter_input( INPUT_POST, 'action' ) ) {
 			// Set default values.
+			$google_api_key = '';
 			$spreadsheet_key = '';
+
+			// Read submitted values.
+			if ( filter_input( INPUT_POST, 'google_api_key' ) ) {
+				$google_api_key = sanitize_text_field(
+					wp_unslash( filter_input( INPUT_POST, 'google_api_key' ) )
+				);
+			}
 
 			// Read submitted values.
 			if ( filter_input( INPUT_POST, 'spreadsheet_key' ) ) {
@@ -80,6 +88,7 @@ class Pull_Hours_Dashboard {
 				);
 			}
 
+			update_option( 'google_api_key', $google_api_key );
 			update_option( 'spreadsheet_key', $spreadsheet_key );
 
 			// Perform the harvesting.

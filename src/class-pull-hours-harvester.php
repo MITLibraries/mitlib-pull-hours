@@ -6,7 +6,9 @@
  * @since 0.0.1
  */
 
-namespace mitlib;
+namespace Mitlib;
+
+use GuzzleHttp\Client;
 
 /**
  * Defines base widget
@@ -38,6 +40,15 @@ class Pull_Hours_Harvester {
 	 * @var string The local folder in which newly harvested data is written.
 	 */
 	public $data_folder = '';
+
+	/**
+	 * The Google API key is a credential used to access the Google Sheets
+	 * API. It should be restricted to only the Sheets API, as well as
+	 * restricted to referals from Libraries domains.
+	 *
+	 * @var string The API key used to connect to the Google Sheets API.
+	 */
+	public $google_api_key = '';
 
 	/**
 	 * The path is the loal file path to the current directory. It is
@@ -73,6 +84,12 @@ class Pull_Hours_Harvester {
 		// timestamped folder inside the backups/ folder.
 		$this->backup();
 
+		// Third, we establish a client that can retrieve information from the
+		// Google Sheets API (v4).
+		// This approach is borrowed from the PHP Quickstart at
+		// https://developers.google.com/sheets/api/quickstart/php
+		$api_service = $this->get_service();
+
 		// Now we build an associate array of the materials that need to be
 		// harvested from Google Sheets. We start with the spreadsheet key,
 		// stored in $this->spreadsheet_key.
@@ -82,12 +99,21 @@ class Pull_Hours_Harvester {
 		// along these lines:
 		// - key => filename in cache
 		// - value => url that will be polled.
-		$sheet_list = $this->build_sheet_list( $this->spreadsheet_key );
 
-		// This iterates over the associative array that was built in the last
-		// step, reading each URL (in the value) and saving the contents to
-		// the cache (named in the key).
-		$this->fetch( $sheet_list );
+		// Fourth, we populate an array of sheet names within our spreadsheet.
+		// This array will then comprise the "shopping list" of values that
+		// are harvested to populate the local cache.
+		$response = $api_service->spreadsheets->get( $this->spreadsheet_key );
+		$sheet_array = array_map( array( $this, 'pluck_sheet_name' ) , $response->sheets );
+
+		// Fifth, we iterates over the associative array that was built in the
+		// last step, reading each URL (in the value) and saving the contents
+		// to the cache (named in the key).
+		$this->fetch( $api_service, $sheet_array );
+
+		// Finally, we echo an updated message about the number of records
+		// that were updated.
+		echo( '<div class="updated"><p>Local hours cache has been harvested with information from ' . esc_html( count( $sheet_array ) ) . ' sheets .</p></div>' );
 
 	}
 
@@ -108,10 +134,10 @@ class Pull_Hours_Harvester {
 		// Get list of files to back up.
 		$files = scandir( $this->data_folder );
 
-		// Copy those files into backup folder.
+		// Copy those files into backup folder, but...
 		foreach ( $files as $file ) {
-			// This is meant to just skip short entries - i.e. '.' and '..'.
-			if ( strlen( $file ) < strlen( $this->spreadsheet_key ) ) {
+			// ... skip files that do not end in ".json".
+			if ( substr( $file, -5 ) <> '.json' ) {
 				continue;
 			}
 			copy(
@@ -122,96 +148,49 @@ class Pull_Hours_Harvester {
 	}
 
 	/**
-	 * This method populates an assocative array based on the discovered
-	 * contents of a Google spreadsheet identified by $key (which ultimately
-	 * is defined by site editors and stored in the $spreadsheet_key option).
-	 *
-	 * @param String $key An identifying key to a Google spreadsheet.
-	 */
-	private function build_sheet_list( $key ) {
-		// $sheets_array is the list of URLs that will be harvested and
-		// written to the data cache.
-		$sheets_array = array();
-
-		// Store the parent sheet URL.
-		$sheets_array[ $this->spreadsheet_key ] = $this->lookup_base_url( $this->spreadsheet_key, 'tabletop' );
-
-		// This is the master URL that we use to look up the rest.
-		$url = $this->lookup_base_url( $key, 'json' );
-		$base = json_decode( file_get_contents( $url ), true );
-
-		foreach ( $base['feed']['entry'] as $item ) {
-			$sheet_key = $this->set_sheet_key( $item['id']['$t'] );
-			$sheet_url = $this->lookup_child_url( $sheet_key );
-			$sheets_array[ $this->spreadsheet_key . '-' . $sheet_key ] = $sheet_url;
-		}
-
-		return $sheets_array;
-	}
-
-	/**
 	 * This method iterates over the $array (defined in build_sheet_list) and
 	 * fetches each item (in the $value) and writes it to the filename defined
-	 * by $key.
+	 * by $target (which has been sanitized with dashes).
 	 *
 	 * @param Array $array An associative array of filenames and URLs.
 	 */
-	private function fetch( $array ) {
-		foreach ( $array as $key => $value ) {
-			$data = file_get_contents( $value );
-			$this->write( $key, $data );
+	private function fetch( $service, $array ) {
+		foreach ( $array as $target ) {
+			$data = $service->spreadsheets_values->get( $this->spreadsheet_key, $target );
+			$filename = sanitize_file_name( $target ) . '.json';
+			$this->write( $filename, json_encode( $data['values'] ) );
 		}
 	}
 
 	/**
-	 * This method returns the URL to a Google spreadsheet - not a specific
-	 * worksheet, but the overall entity. Because we end up pulling this
-	 * information twice in different formats, we have an argument to
-	 * identify each.
+	 * This method establishes a client, with associated token, that can read
+	 * information from the Google Sheets API (v4).
 	 *
-	 * @param string $key An identifying key to a Google spreadsheet.
-	 * @param string $format Either 'json' or 'tabletop'.
+	 * @link https://developers.google.com/sheets/api/quickstart/php
+	 * @link https://github.com/googleapis/google-api-php-client#user-content-controlling-http-client-configuration-directly
 	 */
-	private function lookup_base_url( $key, $format ) {
-		$url = 'https://spreadsheets.google.com/feeds/worksheets/' .
-			   $key .
-			   '/public/basic';
-		switch ( $format ) {
-			case 'json':
-				$url .= '?alt=json';
-				break;
-			case 'tabletop':
-				$url .= '?alt=json-in-script&callback=Tabletop.singleton.loadSheets';
-				break;
-		}
-		return $url;
+	private function get_service() {
+		$httpClient = new Client([
+			'headers' => [
+				'referer' => DOMAIN_CURRENT_SITE
+			]
+		]);
+		$client = new \Google_Client();
+		$client->setApplicationName('LibraryHoursSheets');
+		$client->setDeveloperKey( $this->google_api_key );
+		$client->setHttpClient($httpClient);
+		$service = new \Google_Service_Sheets( $client );
+		return $service;
 	}
 
 	/**
-	 * This method returns the URL to a specific worksheet inside a Google
+	 * This method plucks the name of a sheet out of general metadata for a
 	 * spreadsheet.
 	 *
-	 * @param string $key An identifying key to the specific worksheet inside
-	 * a Google spreadsheet.
+	 * @return string $name The name of a single sheet in a spreadsheet.
 	 */
-	private function lookup_child_url( $key ) {
-		$url = 'https://spreadsheets.google.com/feeds/list/' .
-			   $this->spreadsheet_key . '/' . $key .
-			   '/public/values' .
-			   '?alt=json-in-script&callback=Tabletop.singleton.loadSheet';
-		return $url;
-	}
-
-	/**
-	 * This method identifies the key to a specific worksheet, which is the
-	 * last few characters in a retrieved URL, after the final slash.
-	 *
-	 * @param string $url A URL to a Google spreadsheet worksheet.
-	 */
-	private function set_sheet_key( $url ) {
-		$length = strlen( $url );
-		$position = strrpos( $url, '/' ) + 1;
-		return substr( $url, $position - $length );
+	private function pluck_sheet_name( $haystack ) {
+		return $haystack['properties']['title'];
 	}
 
 	/**
@@ -223,6 +202,9 @@ class Pull_Hours_Harvester {
 		// Define timestamp as current time.
 		$this->cache_timestamp = time();
 		update_option( 'cache_timestamp', $this->cache_timestamp );
+
+		// Populate spreadsheet key based on WP option.
+		$this->google_api_key = get_option( 'google_api_key' );
 
 		// Populate spreadsheet key based on WP option.
 		$this->spreadsheet_key = get_option( 'spreadsheet_key' );

@@ -6,6 +6,9 @@
 	<!-- Set a description for this ruleset. -->
 	<description>A custom set of code standard rules to check for WordPress themes.</description>
 
+	<!-- Exclude the vendor directory from being assessed. -->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
 	<!-- Include the WordPress ruleset, with exclusions. -->
 	<rule ref="WordPress">
 		<!-- Exclude non-security sniffs -->

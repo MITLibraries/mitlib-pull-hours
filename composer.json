@@ -1,5 +1,5 @@
 {
-    "name": "MITLibraries/mitlib-pull-hours",
+    "name": "mitlibraries/mitlib-pull-hours",
     "description": "A WordPress plugin",
     "type": "wordpress-plugin",
     "license": "GPLv2",
@@ -9,5 +9,21 @@
             "email": "mjbernha@mit.edu"
         }
     ],
-    "require": {}
+    "require": {
+        "google/apiclient": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mitlib\\": "src/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": "Google_Task_Composer::cleanup",
+        "post-update-cmd": "Google_Task_Composer::cleanup"
+    },
+    "extra": {
+        "google/apiclient-services": [
+            "Sheets"
+        ]
+    }
 }

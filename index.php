@@ -6,6 +6,6 @@
  * @since 0.1.0
  */
 
-namespace mitlib;
+namespace Mitlib;
 
 // Silence is golden.
