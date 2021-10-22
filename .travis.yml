@@ -23,16 +23,18 @@ matrix:
     # We sniff the current and +1 release of PHP, and just run syntax checking
     # for others.
     - php: 'nightly'
+    - php: '8.0'
+    - php: '7.4'
     - php: '7.3'
-    - php: '7.2'
       env: PHPCS_BRANCH=master PHPCS_SCRIPT=bin SNIFF=1
-    - php: '7.1'
+    - php: '7.2'
       env: PHPCS_BRANCH=master PHPCS_SCRIPT=bin SNIFF=1
 
   allow_failures:
     - php: "nightly"
+    - php: "8.0"
+    - php: "7.4"
     - php: "7.3"
-    - php: "7.2"
 
 # Use this to prepare the system to install prerequisites or dependencies.
 # e.g. sudo apt-get update.
