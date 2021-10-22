@@ -117,7 +117,8 @@ class Pull_Hours_Display_Widget_Slim extends \WP_Widget {
 
 		// Render markup.
 		echo wp_kses( $args['before_widget'], $allowed );
-		require( plugin_dir_path( __FILE__ ) . '../templates/display-widget-slim.php' );
+		$template = file_get_contents( dirname( __FILE__ ) . '/../templates/display-widget-slim.html' );
+		echo wp_kses( sprintf( $template, $instance['location_label'], $instance['title'] ), $allowed );
 		echo wp_kses( $args['after_widget'], $allowed );
 	}
 
@@ -143,6 +144,11 @@ class Pull_Hours_Display_Widget_Slim extends \WP_Widget {
 			'h3' => array(
 				'class' => array(),
 			),
+			'span' => array(
+			),
+			'strong' => array(
+				'data-location-hours' => array()
+			)
 		);
 	}
 }
