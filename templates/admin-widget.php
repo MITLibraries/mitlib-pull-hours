@@ -14,7 +14,7 @@ $spreadsheet_url = 'https://docs.google.com/spreadsheets/d/' . $spreadsheet_key 
 
 // Convert timestamp to the right timezone.
 $cache_timestamp = get_option( 'cache_timestamp' );
-$last_updated = new DateTime( date( 'M j, Y g:i:s A T', $cache_timestamp ) );
+$last_updated = new DateTime( gmdate( 'M j, Y g:i:s A T', $cache_timestamp ) );
 $last_updated->setTimezone( new DateTimeZone( 'America/New_York' ) );
 
 // Calculate time interval since last harvest.

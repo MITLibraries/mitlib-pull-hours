@@ -1,9 +1,9 @@
 <?php
 /**
- * Class that defines a not-so-slim public-facing widget that displays hours information.
+ * Class that defines a very slim public-facing widget that displays hours information.
  *
  * @package MITlib Pull Hours
- * @since 0.2.0
+ * @since 0.4.0
  */
 
 namespace Mitlib;
@@ -11,19 +11,19 @@ namespace Mitlib;
 /**
  * Defines a public-facing widget for displaying hours information
  */
-class Pull_Hours_Display_Widget extends \WP_Widget {
+class Pull_Hours_Display_Widget_Slim extends \WP_Widget {
 
 	/**
 	 * Overridden constructor from WP_Widget.
 	 */
 	public function __construct() {
 		$widget_ops = array(
-			'classname' => 'pull-hours-display-widget',
-			'description' => __( 'Not-slim hours widget for one location', 'hoursdisplay' ),
+			'classname' => 'pull-hours-display-widget-slim',
+			'description' => __( 'Slim hours widget for one location', 'hoursdisplayslim' ),
 		);
 		parent::__construct(
-			'hoursdisplay',
-			__( 'Location Hours', 'hoursdisplay' ),
+			'hoursdisplayslim',
+			__( 'Location Hours - Slim', 'hoursdisplayslim' ),
 			$widget_ops
 		);
 	}
@@ -36,19 +36,20 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		$widget_title = $instance['widget_title'];
-		$location_slug = $instance['location_slug'];
+		$title = $instance['title'];
+		$location_label = $instance['location_label'];
 
 		$this->form_textfield(
-			'widget_title',
-			'Widget Title:',
-			$widget_title
+			'title',
+			'Location Name:',
+			$title,
+			'This value should correspond to the name of a location in the Hours spreadsheet.'
 		);
 		$this->form_textfield(
-			'location_slug',
-			'Location Name:',
-			$location_slug,
-			'This value should correspond to the name of a location in the Hours spreadsheet.'
+			'location_label',
+			'Location Label:',
+			$location_label,
+			'This will be displayed just before the hours information. "Today\'s hours:" is a good default value.'
 		);
 	}
 
@@ -85,7 +86,7 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	 * Registers widget.
 	 */
 	public static function init() {
-		register_widget( 'Mitlib\Pull_Hours_Display_Widget' );
+		register_widget( 'Mitlib\Pull_Hours_Display_Widget_Slim' );
 	}
 
 	/**
@@ -98,8 +99,8 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$instance['widget_title'] = $new_instance['widget_title'];
-		$instance['location_slug'] = $new_instance['location_slug'];
+		$instance['title'] = $new_instance['title']; // Use the location slug as the title for easy identification.
+		$instance['location_label'] = $new_instance['location_label'];
 		return $instance;
 	}
 
@@ -116,10 +117,8 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 
 		// Render markup.
 		echo wp_kses( $args['before_widget'], $allowed );
-		if ( $instance['widget_title'] ) {
-			echo wp_kses( $args['before_title'], $allowed ) . esc_html( $instance['widget_title'] ) . wp_kses( $args['after_title'], $allowed );
-		}
-		require( plugin_dir_path( __FILE__ ) . '../templates/display-widget.php' );
+		$template = file_get_contents( dirname( __FILE__ ) . '/../templates/display-widget-slim.html' );
+		echo wp_kses( sprintf( $template, $instance['location_label'], $instance['title'] ), $allowed );
 		echo wp_kses( $args['after_widget'], $allowed );
 	}
 
@@ -145,6 +144,11 @@ class Pull_Hours_Display_Widget extends \WP_Widget {
 			'h3' => array(
 				'class' => array(),
 			),
+			'span' => array(
+			),
+			'strong' => array(
+				'data-location-hours' => array()
+			)
 		);
 	}
 }
