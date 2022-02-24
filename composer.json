@@ -2,7 +2,7 @@
     "name": "mitlibraries/mitlib-pull-hours",
     "description": "A WordPress plugin",
     "type": "wordpress-plugin",
-    "license": "GPLv2",
+    "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "Matt Bernhardt",
