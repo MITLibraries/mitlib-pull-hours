@@ -7,6 +7,10 @@ defaults:
 jobs:
   composer_validate:
     runs-on: ubuntu-latest
+
+    env:
+      WPCS_PATH: "$GITHUB_WORKSPACE/vendor/wp-coding-standards/wpcs"
+
     steps:
     - uses: actions/checkout@v2
 
@@ -16,14 +20,8 @@ jobs:
     - name: Install Composer dependencies
       run: composer install --prefer-dist --no-progress
 
-    - name: PHPCS standards
-      run: ./vendor/bin/phpcs -i
-
     - name: Install WordPress coding standards
-      run: ./vendor/bin/phpcs --config-set installed_paths ./vendor/wp-coding-standards/wpcs
-
-    - name: PHPCS standards
-      run: ./vendor/bin/phpcs -i
+      run: ./vendor/bin/phpcs --config-set installed_paths ${{env.WPCS_PATH}}
 
     - name: Check code against WordPress standards
       run: ./vendor/bin/phpcs -psvn . --standard=./codesniffer.mitlib.xml --extensions=php
