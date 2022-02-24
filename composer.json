@@ -25,5 +25,9 @@
         "google/apiclient-services": [
             "Sheets"
         ]
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6",
+        "wp-coding-standards/wpcs": "^2.3"
     }
 }

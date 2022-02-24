@@ -12,3 +12,18 @@ jobs:
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
+
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: PHPCS standards
+      run: ./vendor/bin/phpcs -i
+
+    - name: Install WordPress coding standards
+      run: ./vendor/bin/phpcs --config-set installed_paths ./vendor/wp-coding-standards/wpcs
+
+    - name: PHPCS standards
+      run: ./vendor/bin/phpcs -i
+
+    - name: Check code against WordPress standards
+      run: ./vendor/bin/phpcs -psvn . --standard=./codesniffer.mitlib.xml --extensions=php
