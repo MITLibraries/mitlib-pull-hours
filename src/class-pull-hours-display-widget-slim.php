@@ -6,7 +6,7 @@
  * @since 0.4.0
  */
 
-namespace Mitlib;
+namespace Mitlib\PullHours;
 
 /**
  * Defines a public-facing widget for displaying hours information
@@ -86,7 +86,7 @@ class Pull_Hours_Display_Widget_Slim extends \WP_Widget {
 	 * Registers widget.
 	 */
 	public static function init() {
-		register_widget( 'Mitlib\Pull_Hours_Display_Widget_Slim' );
+		register_widget( 'Mitlib\PullHours\Pull_Hours_Display_Widget_Slim' );
 	}
 
 	/**

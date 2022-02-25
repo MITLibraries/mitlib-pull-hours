@@ -6,7 +6,7 @@
  * @since 0.0.1
  */
 
-namespace Mitlib;
+namespace Mitlib\PullHours;
 
 use GuzzleHttp\Client;
 

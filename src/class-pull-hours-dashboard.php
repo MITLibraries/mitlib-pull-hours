@@ -6,7 +6,7 @@
  * @since 0.0.1
  */
 
-namespace Mitlib;
+namespace Mitlib\PullHours;
 
 /**
  * Defines base widget
@@ -34,7 +34,7 @@ class Pull_Hours_Dashboard {
 				'Library hours',
 				self::PERMS,
 				'mitlib-hours-dashboard',
-				array( 'Mitlib\Pull_Hours_Dashboard', 'dashboard' )
+				array( 'Mitlib\PullHours\Pull_Hours_Dashboard', 'dashboard' )
 			);
 		}
 	}
