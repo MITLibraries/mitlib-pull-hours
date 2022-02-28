@@ -2,7 +2,7 @@
     "name": "mitlibraries/mitlib-pull-hours",
     "description": "A WordPress plugin",
     "type": "wordpress-plugin",
-    "license": "GPLv2",
+    "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "Matt Bernhardt",
@@ -19,11 +19,18 @@
     },
     "scripts": {
         "post-install-cmd": "Google_Task_Composer::cleanup",
-        "post-update-cmd": "Google_Task_Composer::cleanup"
+        "post-update-cmd": [
+            "Google_Task_Composer::cleanup",
+            "composer dumpautoload -o"
+        ]
     },
     "extra": {
         "google/apiclient-services": [
             "Sheets"
         ]
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6",
+        "wp-coding-standards/wpcs": "^2.3"
     }
 }

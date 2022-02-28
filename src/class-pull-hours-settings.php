@@ -6,7 +6,7 @@
  * @since 0.0.1
  */
 
-namespace Mitlib;
+namespace Mitlib\PullHours;
 
 /**
  * Defines base widget
@@ -25,14 +25,14 @@ class Pull_Hours_Settings {
 		add_settings_section(
 			'mitlib_pull_hours_general',
 			'General settings',
-			array( 'Mitlib\Pull_Hours_Settings', 'general' ),
+			array( 'Mitlib\PullHours\Pull_Hours_Settings', 'general' ),
 			'mitlib-hours-dashboard'
 		);
 
 		add_settings_field(
 			'spreadsheet_key',
 			'Hours spreadsheet key',
-			array( 'Mitlib\Pull_Hours_Settings', 'spreadsheet_callback' ),
+			array( 'Mitlib\PullHours\Pull_Hours_Settings', 'spreadsheet_callback' ),
 			'mitlib-hours-dashboard',
 			'mitlib_pull_hours_general',
 			array(
@@ -44,7 +44,7 @@ class Pull_Hours_Settings {
 		add_settings_field(
 			'google_api_key',
 			'Google Sheets API key',
-			array( 'Mitlib\Pull_Hours_Settings', 'google_api_key_callback' ),
+			array( 'Mitlib\PullHours\Pull_Hours_Settings', 'google_api_key_callback' ),
 			'mitlib-hours-dashboard',
 			'mitlib_pull_hours_general',
 			array(
@@ -56,7 +56,7 @@ class Pull_Hours_Settings {
 		add_settings_field(
 			'cache_timestamp',
 			'Last harvested',
-			array( 'Mitlib\Pull_Hours_Settings', 'timestamp_callback' ),
+			array( 'Mitlib\PullHours\Pull_Hours_Settings', 'timestamp_callback' ),
 			'mitlib-hours-dashboard',
 			'mitlib_pull_hours_general',
 			array(

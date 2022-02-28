@@ -1,0 +1,27 @@
+name: Validate code against standards
+on: push
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  composer_validate:
+    runs-on: ubuntu-latest
+
+    env:
+      WPCS_PATH: "$GITHUB_WORKSPACE/vendor/wp-coding-standards/wpcs"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Install WordPress coding standards
+      run: ./vendor/bin/phpcs --config-set installed_paths ${{env.WPCS_PATH}}
+
+    - name: Check code against WordPress security standards
+      run: ./vendor/bin/phpcs -psvn . --standard=./codesniffer.security.xml --extensions=php
