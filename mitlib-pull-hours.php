@@ -13,7 +13,7 @@
  * @link https://github.com/MITLibraries/mitlib-pull-hours
  */
 
-namespace Mitlib;
+namespace Mitlib\Pullhours;
 
 // Don't call the file directly!
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,3 +29,5 @@ add_action( 'wp_dashboard_setup', array( 'Mitlib\Pull_Hours_Admin_Widget', 'init
 add_action( 'admin_menu', array( 'Mitlib\Pull_Hours_Dashboard', 'init' ) );
 add_action( 'widgets_init', array( 'Mitlib\Pull_Hours_Display_Widget', 'init' ) );
 add_action( 'widgets_init', array( 'Mitlib\Pull_Hours_Display_Widget_Slim', 'init' ) );
+
+add_action( 'wp_dashboard_setup', array( 'Mitlib\Pullhours\TestAdminWidget', 'init' ) );
