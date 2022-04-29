@@ -6,12 +6,12 @@
  * @since 0.0.1
  */
 
-namespace Mitlib;
+namespace Mitlib\Pullhours;
 
 /**
  * Defines base widget
  */
-class Pull_Hours_Dashboard {
+class Dashboard {
 
 	/**
 	 * The id of this widget.
@@ -34,7 +34,7 @@ class Pull_Hours_Dashboard {
 				'Library hours',
 				self::PERMS,
 				'mitlib-hours-dashboard',
-				array( 'Mitlib\Pull_Hours_Dashboard', 'dashboard' )
+				array( 'Mitlib\Pullhours\Dashboard', 'dashboard' )
 			);
 		}
 	}
@@ -92,7 +92,7 @@ class Pull_Hours_Dashboard {
 			update_option( 'spreadsheet_key', $spreadsheet_key );
 
 			// Perform the harvesting.
-			$harvester = new Pull_Hours_Harvester();
+			$harvester = new Harvester();
 			$harvester->harvest();
 
 		}
