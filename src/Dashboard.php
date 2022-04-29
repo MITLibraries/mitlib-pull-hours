@@ -92,7 +92,7 @@ class Dashboard {
 			update_option( 'spreadsheet_key', $spreadsheet_key );
 
 			// Perform the harvesting.
-			$harvester = new Pull_Hours_Harvester();
+			$harvester = new Harvester();
 			$harvester->harvest();
 
 		}
