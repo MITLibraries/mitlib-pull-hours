@@ -24,10 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 // Call the class' init method as part of dashboard setup.
-add_action( 'admin_init', array( 'Mitlib\Pull_Hours_Settings', 'init' ) );
-add_action( 'wp_dashboard_setup', array( 'Mitlib\Pull_Hours_Admin_Widget', 'init' ) );
-add_action( 'admin_menu', array( 'Mitlib\Pull_Hours_Dashboard', 'init' ) );
-add_action( 'widgets_init', array( 'Mitlib\Pull_Hours_Display_Widget', 'init' ) );
-add_action( 'widgets_init', array( 'Mitlib\Pull_Hours_Display_Widget_Slim', 'init' ) );
+add_action( 'admin_init', array( 'Mitlib\Pullhours\Settings', 'init' ) );
+add_action( 'wp_dashboard_setup', array( 'Mitlib\Pullhours\AdminWidget', 'init' ) );
+add_action( 'admin_menu', array( 'Mitlib\Pullhours\Dashboard', 'init' ) );
+add_action( 'widgets_init', array( 'Mitlib\Pullhours\DisplayWidget', 'init' ) );
+add_action( 'widgets_init', array( 'Mitlib\Pullhours\DisplayWidgetSlim', 'init' ) );
 
 add_action( 'wp_dashboard_setup', array( 'Mitlib\Pullhours\TestAdminWidget', 'init' ) );

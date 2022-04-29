@@ -6,14 +6,14 @@
  * @since 0.0.1
  */
 
-namespace Mitlib;
+namespace Mitlib\Pullhours;
 
 use GuzzleHttp\Client;
 
 /**
  * Defines base widget
  */
-class Pull_Hours_Harvester {
+class Harvester {
 
 	/**
 	 * The backup folder is where we copy old versions of downloaded data,
