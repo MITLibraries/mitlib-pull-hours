@@ -29,5 +29,3 @@ add_action( 'wp_dashboard_setup', array( 'Mitlib\Pullhours\AdminWidget', 'init' 
 add_action( 'admin_menu', array( 'Mitlib\Pullhours\Dashboard', 'init' ) );
 add_action( 'widgets_init', array( 'Mitlib\Pullhours\DisplayWidget', 'init' ) );
 add_action( 'widgets_init', array( 'Mitlib\Pullhours\DisplayWidgetSlim', 'init' ) );
-
-add_action( 'wp_dashboard_setup', array( 'Mitlib\Pullhours\TestAdminWidget', 'init' ) );
